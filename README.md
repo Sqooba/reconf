@@ -39,6 +39,7 @@ Usage: reconf [-f -w <file> ...] [<command>...]
 Options:
   -w, --render <file>  Generate <file> (if it does not exist) by rendering
                        template file named "<file>.template".
+                       Optional format "<template file>:<render file>" allows to be more flexible
   -f, --force          Force generating files, overwriting existing ones.
   -h, --help           Show this usage message and exit.
 ```
@@ -50,6 +51,12 @@ variables available as `{{ .env.NAME }}`.
 
 ```console
 $ reconf -w /srv/nginx.conf nginx -c /srv/nginx.conf
+```
+
+With the optional `<template file>:<render file>` format, template file can come from anywhere:
+
+```console
+$ reconf -w /srv/templates/nginx.conf.template:/srv/nginx.conf nginx -c /srv/nginx.conf
 ```
 
 So, if the template contains the following `listen` stanza

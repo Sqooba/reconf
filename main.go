@@ -19,6 +19,7 @@ Usage: reconf [-f -w <file> ...] [<command>...]
 Options:
   -w, --render <file>  Generate <file> (if it does not exist) by rendering
                        template file named "<file>.template".
+                       Optional format "<template file>:<render file>" allows to be more flexible
   -f, --force          Force generating files, overwriting existing ones.
   -h, --help           Show this usage message and exit.
 `
@@ -27,6 +28,7 @@ const (
 	version        = "v0.1"
 	errorCode      = 120
 	templateSuffix = ".template"
+	templateSeparator = ":"
 )
 
 type Config struct {
@@ -85,7 +87,14 @@ func run(config Config) error {
 
 // Generates file by rendering corresponding template.
 func generate(filename string, vars map[string]interface{}) error {
+
 	tmplname := filename + templateSuffix
+	if strings.Contains(filename, templateSeparator) {
+		parts := strings.Split(filename, templateSeparator)
+		tmplname = parts[0]
+		filename = parts[1]
+	}
+
 	tmpl := template.New(tmplname)
 
 	// Custom functions must be set before parsing template.
