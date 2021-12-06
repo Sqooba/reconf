@@ -1,4 +1,4 @@
-module github.com/snsinfu/reconf
+module github.com/Sqooba/reconf
 
 go 1.15
 
